@@ -63,8 +63,10 @@ artifacts/
 
 # StyleCop
 StyleCopReport.xml
-
+*.png
 # Files built by Visual Studio
+*.dll
+*.exe
 *_i.c
 *_p.c
 *_h.h

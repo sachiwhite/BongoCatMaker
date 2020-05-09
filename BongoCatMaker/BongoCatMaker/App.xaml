@@ -1,0 +1,26 @@
+<Application x:Class="BongoCatMaker.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:BongoCatMaker" StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <Application.Resources>
+    <ResourceDictionary>
+      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:BongoCatMaker.ViewModel" />
+        <Style TargetType="StackPanel">
+           <Setter Property="Background" Value="LightGray"></Setter>
+       </Style>
+       <Style TargetType="Control">
+           <Setter Property="Background" Value="LightGray"></Setter>
+           <Setter Property="Foreground" Value="DarkGray"></Setter>
+       </Style>
+        <Style TargetType="Button">
+           <Setter Property="Background" Value="DarkGray"></Setter>
+           <Setter Property="Foreground" Value="White"></Setter>
+       </Style>
+        <Style x:Key="ToolbarControlsStyle" TargetType="Control">
+           <Setter Property="Background" Value="DimGray"></Setter>
+           <Setter Property="Foreground" Value="White"></Setter>
+       </Style>
+         <Style x:Key="ToolbarStyle" TargetType="StackPanel">
+           <Setter Property="Background" Value="DimGray"></Setter>
+       </Style>
+    </ResourceDictionary>
+      
+  </Application.Resources>
+</Application>
