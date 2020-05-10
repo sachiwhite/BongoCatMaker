@@ -110,10 +110,10 @@
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2">
-            <Label  Margin="5,5"
+            <Label Visibility="Hidden"  Margin="5,5"
                 Padding="5,2"
                 Content="Non-familiar with this BPM/offset stuff? Click here to search our database!"></Label>
-            <Button 
+            <Button  Visibility="Hidden" IsEnabled="False"
                 Command="{Binding OpenDatabaseSearchWindowCommand}"
                     Margin="150,5,5,5"
                     Padding="20,1"
