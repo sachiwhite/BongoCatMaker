@@ -16,36 +16,58 @@ namespace BongoCatMaker.Infrastructure
 {
     public class VideoMakerUsingDirectShow : IVideoMaker
     {
-        private IVideoMakerUtilities videoMakerUtilities;
+        private IVideoMakerTimingUtilities videoMakerTimingUtilities;
         private IVideoCutter videoCutter;
+        private IVideoMakerIOUtilities videoMakerIOUtilities;
 
-        public VideoMakerUsingDirectShow(IVideoMakerUtilities videoMakerUtilities, IVideoCutter videoCutter)
+        public VideoMakerUsingDirectShow(IVideoMakerTimingUtilities videoMakerUtilities, IVideoCutter videoCutter, IVideoMakerIOUtilities videoMakerIOUtilities)
         {
-            this.videoMakerUtilities = videoMakerUtilities;
-            this.videoCutter =videoCutter;
+            this.videoMakerTimingUtilities = videoMakerUtilities;
+            this.videoCutter = videoCutter;
+            this.videoMakerIOUtilities = videoMakerIOUtilities;
         }
-        public void MakeVideo(double BPM, double BPM_Multiplier, double offset,string output, double videoDuration=30 )
+        public async Task MakeVideo(double BPM, double BPM_Multiplier, double offset, string videoTitle, string audioFilePath, double videoDuration = 30)
         {
-            double FrameTimeFromBPM = videoMakerUtilities.ReturnFrameTimeBasedOnBPM(BPM, BPM_Multiplier);
-            using (ITimeline timeline = new DefaultTimeline())
+            string temporaryVideoFileName = videoMakerIOUtilities.ReturnNameWithExtension(videoTitle, true);
+            string VideoFileName = videoMakerIOUtilities.ReturnNameWithExtension(videoTitle, false);
+            double FrameTimeFromBPM = videoMakerTimingUtilities.ReturnFrameTimeBasedOnBPM(BPM, BPM_Multiplier);
+
+            if (videoMakerIOUtilities.CheckIfImageFilesExist(imageFilesPath: $@"jpg2\",19))
             {
-                IGroup group = timeline.AddVideoGroup(32, 738, 650);
-                ITrack videoTrack = group.AddTrack();
-                videoTrack.AddImage($@"jpg2\1.jpg", 0, offset);
-                int framesNumber = videoMakerUtilities.ReturnNumberOfFrames(videoDuration,offset,FrameTimeFromBPM);
-                for (int i = 1; i <= framesNumber; i++)
+                using (ITimeline timeline = new DefaultTimeline())
                 {
-                    int picNumber = i % 18;
-                    videoTrack.AddImage($@"jpg2\{picNumber + 1}.jpg", 0, FrameTimeFromBPM);
-                }
-                ITrack audioTrack = timeline.AddAudioGroup().AddTrack();
-                audioTrack.AddAudio("testinput.mp3", 0, videoTrack.Duration + 2.75);
-                IRenderer renderer = new WindowsMediaRenderer(timeline, output, WindowsMediaProfiles.HighQualityVideo);
-                renderer.Render();
-                videoCutter.CutVideo(output, videoDuration);
+                    IGroup group = timeline.AddVideoGroup(32, 738, 650);
+                    ITrack videoTrack = group.AddTrack();
+                    videoTrack.AddImage($@"jpg2\1.jpg", 0, offset);
+                    int framesNumber = videoMakerTimingUtilities.ReturnNumberOfFrames(videoDuration, offset, FrameTimeFromBPM);
+                    for (int i = 1; i <= framesNumber; i++)
+                    {
+                        int picNumber = i % 18;
+                        videoTrack.AddImage($@"jpg2\{picNumber + 1}.jpg", 0, FrameTimeFromBPM);
+                    }
+                    ITrack audioTrack = timeline.AddAudioGroup().AddTrack();
+                    audioTrack.AddAudio(audioFilePath, 0, videoTrack.Duration + 2.75);
+                    IRenderer renderer = new WindowsMediaRenderer(timeline, temporaryVideoFileName, WindowsMediaProfiles.HighQualityVideo);
+                    renderer.Render();
 
+                    if (CutVideo(temporaryVideoFileName, VideoFileName, videoDuration))
+                        Cleanup(temporaryVideoFileName);
+
+                    Messaging.ShowMessage($"Your video was generated successfully. Look for your {VideoFileName} file in app folder.","Success");
+                }
             }
+           
         }
-       
+
+        private void Cleanup(string temporaryVideoFileName)
+        {
+            //File.Delete(temporaryVideoFileName);
+        }
+
+        private bool CutVideo(string input, string output, double videoDuration)
+        {
+            return videoCutter.CutVideo(input, output, videoDuration);
+            
+        }
     }
 }

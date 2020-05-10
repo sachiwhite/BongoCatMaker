@@ -22,12 +22,10 @@ namespace BongoCatMaker
     public partial class MainWindow : Window, IResizable
     {
         private readonly double ButtonCountInBorder;
-        VideoMakerUsingDirectShow testAnimationMaker;
         public MainWindow()
         {
             ButtonCountInBorder=2;
             InitializeComponent();
-            testAnimationMaker=new VideoMakerUsingDirectShow(new DirectShowVideoMakerUtilities(), new ConsoleFFMpegVideoCutter());
         }
 
         public void ChangePositionOfButtonsWhenSizeChanged()

@@ -30,7 +30,15 @@ namespace BongoCatMaker.Tests
         public void DirectShowVideoMakerUtilities_ReturnsCorrectFrameNumber()
         {
              var utils = new DirectShowVideoMakerUtilities();
-             var actual = utils.ReturnNumberOfFrames(;
+             var actual = utils.ReturnNumberOfFrames(8.5443486,1.979,0.182370820668693);
+            Assert.AreEqual(36,actual);
         }
+        [TestMethod]
+        public void DirectShowVideoMakerUtilities_ThrowsExceptionForNonPositiveLength()
+        {
+            var utils = new DirectShowVideoMakerUtilities();
+            Assert.ThrowsException<InvalidOperationException>(()=>utils.ReturnNumberOfFrames(0,1.979,0.182370820668693));
+        }
+
     }
 }

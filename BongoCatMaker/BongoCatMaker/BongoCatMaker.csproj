@@ -83,13 +83,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Infrastructure\ConsoleFFMpegVideoCutter.cs" />
-    <Compile Include="Infrastructure\DirectShowVideoMakerUtilities.cs" />
-    <Compile Include="Infrastructure\IVideoCutter.cs" />
+    <Compile Include="Infrastructure\Helpers\ConsoleFFMpegVideoCutter.cs" />
+    <Compile Include="Infrastructure\Helpers\DirectShowVideoMakerUtilities.cs" />
+    <Compile Include="Infrastructure\Helpers\DirectShowVideoMakerIOUtilities.cs" />
+    <Compile Include="Infrastructure\Helpers\Interfaces\IVideoCutter.cs" />
     <Compile Include="Infrastructure\IVideoMaker.cs" />
-    <Compile Include="Infrastructure\IVideoMakerUtilities.cs" />
+    <Compile Include="Infrastructure\Helpers\Interfaces\IVideoMakerIOUtilities.cs" />
+    <Compile Include="Infrastructure\Helpers\Interfaces\IVideoMakerTimingUtilities.cs" />
     <Compile Include="Infrastructure\VideoMakerUsingDirectShow.cs" />
     <Compile Include="IResizable.cs" />
+    <Compile Include="Messaging.cs" />
     <Compile Include="Model\SongInfo.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

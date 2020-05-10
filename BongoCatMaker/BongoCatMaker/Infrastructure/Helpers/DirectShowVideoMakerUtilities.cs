@@ -2,7 +2,7 @@
 
 namespace BongoCatMaker.Infrastructure
 {
-    public class DirectShowVideoMakerUtilities :IVideoMakerUtilities
+    public class DirectShowVideoMakerUtilities :IVideoMakerTimingUtilities
     {
         public DirectShowVideoMakerUtilities()
         {
@@ -19,9 +19,18 @@ namespace BongoCatMaker.Infrastructure
 
         public int ReturnNumberOfFrames(double videoDuration, double offset, double frametime)
         {
+            if (videoDuration<=0)
+                throw new InvalidOperationException("video duration was set to less than 0 s.");
+            else if(offset<0)
+                throw new InvalidOperationException("offset can't be a negative number!");
+            else if(frametime<=0)
+                throw new InvalidOperationException("frametime can't be less than 0.");
+            else
+            {
             var rawNumberOfFrames = (videoDuration-offset)/frametime;
             var numberOfFrames = Math.Ceiling(rawNumberOfFrames);
             return (int)numberOfFrames;
+            }
         }
     }
 }

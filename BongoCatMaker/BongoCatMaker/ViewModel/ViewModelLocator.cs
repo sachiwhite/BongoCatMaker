@@ -1,17 +1,4 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:BongoCatMaker"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
-
+using BongoCatMaker.Infrastructure;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -40,7 +27,10 @@ namespace BongoCatMaker.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
-
+            SimpleIoc.Default.Register<IVideoMakerTimingUtilities,DirectShowVideoMakerUtilities>();
+            SimpleIoc.Default.Register<IVideoCutter, ConsoleFFMpegVideoCutter>();
+            SimpleIoc.Default.Register<IVideoMakerIOUtilities, DirectShowVideoMakerIOUtilities>();
+            SimpleIoc.Default.Register<IVideoMaker, VideoMakerUsingDirectShow>();
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
