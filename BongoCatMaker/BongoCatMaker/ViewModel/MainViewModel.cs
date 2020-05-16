@@ -1,8 +1,12 @@
+using AsyncAwaitBestPractices.MVVM;
 using BongoCatMaker.Infrastructure;
 using BongoCatMaker.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BongoCatMaker.ViewModel
 {
@@ -29,13 +33,13 @@ namespace BongoCatMaker.ViewModel
             set => Set(() => VideoDuration, ref songInfo.VideoDuration, value);
         }
         public string VideoFileName { get => songInfo.VideoFileName; set => Set(() => VideoFileName, ref songInfo.VideoFileName, value); }
-
+        public AsyncCommand CleanupOnClosingCommand { get; }
         public RelayCommand OpenDatabaseSearchWindowCommand { get; }
         public RelayCommand<IResizable> MinimizeCommand { get; }
         public RelayCommand<IResizable> CloseCommand { get; }
         public RelayCommand<IResizable> SizeChangedCommand { get; }
         public RelayCommand OpenFileDialogCommand { get; }
-        public RelayCommand MakeAnimationCommand { get; }
+        public AsyncCommand MakeAnimationCommand { get; }
         public string AudioFilePickedName { get => songInfo.AudioPath; set => Set(() => AudioFilePickedName, ref songInfo.AudioPath, value); }
         private SongInfo songInfo;
 
@@ -47,13 +51,14 @@ namespace BongoCatMaker.ViewModel
             SizeChangedCommand = new RelayCommand<IResizable>(ChangePositionOfButtonsWhenSizeChanged);
             OpenFileDialogCommand = new RelayCommand(OpenFileDialog);
             OpenDatabaseSearchWindowCommand = new RelayCommand(OpenDatabaseSearchWindow);
-            MakeAnimationCommand = new RelayCommand(MakeAnimation);
+            MakeAnimationCommand = new AsyncCommand(MakeAnimation);
+            CleanupOnClosingCommand = new AsyncCommand(CleanupOnClosing);
             songInfo = new SongInfo(videoMaker);
         }
 
-        private void MakeAnimation()
+        private async Task MakeAnimation()
         {
-            songInfo.MakeVideo();
+            await songInfo.MakeVideo();
         }
 
         private void OpenDatabaseSearchWindow()
@@ -68,7 +73,23 @@ namespace BongoCatMaker.ViewModel
             if (openFileDialog.ShowDialog() == true)
                 AudioFilePickedName = openFileDialog.FileName;
         }
-
+        private async Task CleanupOnClosing()
+        {
+            DirectoryInfo temporaryFilesDirectory = new DirectoryInfo(@"TemporaryVideos\");
+            var files = temporaryFilesDirectory.GetFiles();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    try
+                    {
+                        files[i].Delete();
+                    }
+                    catch (IOException ex)
+                    {
+                        Messaging.ShowMessage($"Temporary file {files[i].Name} couldn't be deleted.");
+                    }
+                }
+            
+        }
         private void ChangePositionOfButtonsWhenSizeChanged(IResizable window)
         {
             if (window != null)

@@ -11,13 +11,5 @@ namespace BongoCatMaker.Tests
     [TestClass]
     public class ConsoleFFMpegVideoCutterTests
     {
-        [TestMethod]
-        public void ConsoleFFMpegVideoCutterThrowsExceptionForNoPathGiven()
-        {
-            var videoCutter = new ConsoleFFMpegVideoCutter();
-            videoCutter.SetVideoCutterPath("");
-            Assert.ThrowsException<InvalidOperationException>(()=>videoCutter.CutVideo("",1));
-                
-        }
     }
 }

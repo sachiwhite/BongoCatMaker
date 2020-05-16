@@ -7,9 +7,9 @@ namespace BongoCatMaker.Infrastructure
 {
     public class ConsoleFFMpegVideoCutter :IVideoCutter
     {
-        private string ffMPEG_Path = @"C:\Users\lewon\source\repos\FFMpegSharp-master\FFMpegSharp\FFMPEG\bin\x64\ffmpeg.exe";
+        private string ffMPEG_Path="ffmpeg.exe";
 
-        public ConsoleFFMpegVideoCutter() 
+        public ConsoleFFMpegVideoCutter()
         {
         }
 

@@ -13,5 +13,15 @@ namespace BongoCatMaker
         {
             MessageBox.Show(messageText,caption);
         }
+        public static bool ShowMessageYesNo(string messageText, string caption="Question")
+        {
+            MessageBoxResult result = MessageBox.Show(messageText, caption, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                return true;
+            }
+            else return false;
+
+        }
     }
 }

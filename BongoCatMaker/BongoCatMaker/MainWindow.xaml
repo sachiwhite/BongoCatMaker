@@ -9,8 +9,9 @@
         DataContext="{Binding Path=Main, Source={StaticResource Locator}}"
         mc:Ignorable="d"
         x:Name="mainWindow"
-        Title="make your own bongo cat!" Height="450" Width="880"
+        Title="make your own bongo cat!" Height="350" Width="880"
         AllowsTransparency="True"
+        Background="LightGray"
         Opacity="0.9"
         WindowStyle="None">
         <i:Interaction.Triggers>
@@ -20,6 +21,9 @@
                     CommandParameter="{Binding ElementName=mainWindow}">                   
                 </mvvm:EventToCommand>
             </i:EventTrigger>
+           <i:EventTrigger EventName="Closing">
+               <mvvm:EventToCommand Command="{Binding CleanupOnClosingCommand, Mode=OneWay}"></mvvm:EventToCommand>
+           </i:EventTrigger>
         </i:Interaction.Triggers> 
     
     <Grid>
@@ -31,8 +35,8 @@
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-             <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+             <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Style="{StaticResource ToolbarStyle}" Grid.Row="0" Grid.ColumnSpan="2"  Orientation="Horizontal">
             <Image Margin="2,0" Source="app_icon.ico"> </Image>
@@ -124,7 +128,7 @@
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2">
               <Button Command="{Binding MakeAnimationCommand}"
                     Padding="20,2"
-                    Margin="10,5"  Content="Make your bongo cat!"
+                    Content="Make your bongo cat!"
                     HorizontalAlignment="Center"></Button>
         </StackPanel>
     </Grid>
