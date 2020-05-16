@@ -79,7 +79,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
              <Label Content="Set a BPM of the song"></Label>
             <StackPanel Orientation="Horizontal">
-              <Slider x:Name="bpmSlider"  TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" Minimum="50" Maximum="400"
+              <Slider x:Name="bpmSlider"  TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" Minimum="1" Maximum="400"
                         Value="{Binding BpmValue}"
                         MinWidth="220"
                         Width="500"
